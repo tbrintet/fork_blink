@@ -2,6 +2,10 @@
 Linux Kernel Module blinking leds each time the fork system call is used.
 
 # Compilation
+
+In order to build kernel modules, you need to have a proper Linux kernel development environment.
+You may need to install the linux-headers package, check your distro specific instructions.
+
 ```bash
 make
 ```
