@@ -12,7 +12,7 @@ make
 
 # Usage
 ```bash
-sudo insmod fork_blink.ko addr=0x$(echo $(sudo grep 'sys_call_table' /proc/kallsyms | cut -d' ' -f1) | cut -d' ' -f1)
+sudo insmod fork_blink.ko addr=0x$(sudo grep 'sys_call_table' /proc/kallsyms | cut -d' ' -f1 | cut -d' ' -f1)
 ```
 
 After module load:
