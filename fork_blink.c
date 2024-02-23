@@ -47,7 +47,6 @@ static int __init fork_blink_init(void)
 	force_write_cr0(read_cr0() | 0x10000);
 
 	led_trigger_register_simple("fork_blink", &fork_blink);
-	led_trigger_event(fork_blink, LED_FULL);
 	pr_info("fork_blink module loaded.\n");
 	return 0;
 }
