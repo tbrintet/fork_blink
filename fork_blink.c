@@ -21,14 +21,15 @@ static inline void force_write_cr0(unsigned long val)
 static long my_clone(const struct pt_regs *pr)
 {
 	static int state = 0;
-	pr_info("my_clone called\n");
+	pr_debug("my_clone called\n");
 	led_trigger_event(fork_blink, (state ^= 1));
 	return real_clone(pr);
 }
 
+
 static int __init fork_blink_init(void)
 {
-	pr_info("fork_blink module loading...\n");
+	pr_debug("fork_blink module loading...\n");
 
 	if (addr == 0)
 		return -EINVAL;
@@ -47,13 +48,14 @@ static int __init fork_blink_init(void)
 	force_write_cr0(read_cr0() | 0x10000);
 
 	led_trigger_register_simple("fork_blink", &fork_blink);
+
 	pr_info("fork_blink module loaded.\n");
 	return 0;
 }
 
 static void __exit fork_blink_exit(void)
 {
-	pr_info("fork_blink module unloading....\n");
+	pr_debug("fork_blink module unloading....\n");
 
 	led_trigger_unregister_simple(fork_blink);
 
