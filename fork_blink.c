@@ -1,5 +1,7 @@
 #include <linux/module.h>
 #include <linux/leds.h>
+#include <linux/slab.h>
+#include <linux/fs.h>
 
 DEFINE_LED_TRIGGER(fork_blink);
 
@@ -18,10 +20,27 @@ static inline void force_write_cr0(unsigned long val)
 	asm volatile("mov %0,%%cr0" : : "r"(val), "m"(__force_order));
 }
 
+static void print_exe_file(void)
+{
+	struct mm_struct * mm = current->mm;
+	if (!mm)
+		return;
+	down_read(&mm->mmap_lock);
+	if (mm->exe_file) {
+		char * pathname = kmalloc(PATH_MAX, GFP_NOWAIT);
+		if (pathname) {
+			char * p = d_path(&mm->exe_file->f_path, pathname, PATH_MAX);
+			pr_info("clone syscall initiated by %s\n", p);
+			kfree(pathname);
+		}
+	}
+	up_read(&mm->mmap_lock);
+}
+
 static long my_clone(const struct pt_regs *pr)
 {
 	static int state = 0;
-	pr_debug("my_clone called\n");
+	print_exe_file();
 	led_trigger_event(fork_blink, (state ^= 1));
 	return real_clone(pr);
 }
