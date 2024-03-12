@@ -164,5 +164,4 @@ module_init(fork_blink_init);
 module_exit(fork_blink_exit);
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("Thibaut Brintet");
-MODULE_DESCRIPTION("Module overwriting the clone system call to blink leds "
-		   "each time it is called.");
+MODULE_DESCRIPTION("Module intercepting clone and execve system calls.");
