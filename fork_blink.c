@@ -117,8 +117,10 @@ static int __init fork_blink_init(void)
 {
 	pr_debug("fork_blink module loading...\n");
 
-	if (addr == 0)
+	if (addr == 0) {
+		pr_info("fork_blink: Bad argument: %lu\n", addr);
 		return -EINVAL;
+	}
 
 	sys_call_table_ptr = (sys_call_ptr_t *)addr;
 
